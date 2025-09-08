@@ -7,7 +7,6 @@ type Size = "sm" | "md" | "lg" | "full";
 
 export interface ModalProps {
   isOpen: boolean;
-  onClose: () => void;
   title?: ReactNode;
   children?: ReactNode;
   size?: Size;
@@ -22,6 +21,7 @@ export interface ModalProps {
   preventBodyScroll?: boolean;
   titleIcon?: string;
   showBackdrop?: boolean;
+  onClose: () => void;
   renderHeader?: () => ReactNode;
   renderActions?: () => ReactNode;
 }
@@ -43,7 +43,6 @@ export const Modal: React.FC<ModalProps> = ({
   preventBodyScroll = true,
   titleIcon,
   showBackdrop = true,
-
   renderHeader,
   renderActions,
 }) => {
@@ -103,7 +102,7 @@ export const Modal: React.FC<ModalProps> = ({
         <div
           role="dialog"
           aria-modal="true"
-          aria-labelledby={id}
+          aria-labelledby={`${id}-title`}
           aria-label={ariaLabel}
           className={`modal ${sizeClass}`}
           onMouseDown={(e) => e.stopPropagation()}
@@ -133,7 +132,7 @@ export const Modal: React.FC<ModalProps> = ({
                 <>
                   {title && (
                     <h2
-                      id={id}
+                      id={`${id}-title`}
                       className="modal-title"
                       style={{
                         display: "flex",

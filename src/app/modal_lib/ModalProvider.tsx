@@ -60,11 +60,11 @@ export function ModalProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const onEsc = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && stack.length > 0) close();
+      if (e.key === "Escape") close();
     };
     document.addEventListener("keydown", onEsc);
     return () => document.removeEventListener("keydown", onEsc);
-  }, [stack]);
+  }, []);
 
   const push: ModalOpener = (Component, props, mode = "open") => {
     const id = crypto.randomUUID();
