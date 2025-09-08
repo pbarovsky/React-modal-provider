@@ -1,5 +1,5 @@
 import { FirstModal } from "../components/FirstModal";
-import { useModalRenderer } from "../hooks/useModalRenderer";
+import { useModalRenderer } from "../app/modal_lib/hooks/useModalRenderer";
 
 export function ExamplePage() {
   const { open } = useModalRenderer();

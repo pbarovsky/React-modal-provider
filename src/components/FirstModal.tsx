@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { BaseModal } from "../app/modal_lib/BaseModal";
-import { useModalRenderer } from "../hooks/useModalRenderer";
+import { useModalRenderer } from "../app/modal_lib/hooks/useModalRenderer";
 import { ConfirmModal } from "./ConfirmModal";
 
 export function FirstModal() {

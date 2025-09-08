@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { ModalContext, type ModalOpener } from "../app/modal_lib/ModalProvider";
+import { ModalContext, type ModalOpener } from "../ModalProvider"
 
 export function useModalRenderer() {
   const ctx = useContext(ModalContext);

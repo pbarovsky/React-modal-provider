@@ -19,7 +19,7 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
       size="sm"
       {...baseModalProps}
       renderActions={() => (
-        <ConfirmModalActions
+        <ConfirmModalActions // buttons
           onConfirm={onConfirm}
           onClose={baseModalProps.onClose}
         />

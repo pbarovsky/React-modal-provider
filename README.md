@@ -1,69 +1,155 @@
-# React + TypeScript + Vite
+# Создание и управление модальными окнами React
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Использование
 
-Currently, two official plugins are available:
+Обернуть приложение в провайдер
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```ts
+createRoot(document.getElementById("root")!).render(
+  <StrictMode>
+    <ModalProvider>
+      <App />
+    </ModalProvider>
+  </StrictMode>
+);
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Modal
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Базовый компонент модалки с полной кастомизацией.
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+| Пропс               | Тип               | Описание                                                                    |     |     |     |
+| ------------------- | ----------------- | --------------------------------------------------------------------------- | --- | --- | --- |
+| `isOpen`            | `boolean`         | Флаг видимости модалки.                                                     |     |     |     |
+| `onClose`           | `() => void`      | Функция закрытия модалки.                                                   |     |     |     |
+| `title`             | `ReactNode`       | Заголовок модалки.                                                          |     |     |     |
+| `children`          | `ReactNode`       | Контент модалки.                                                            |     |     |     |
+| `size`              | `sm md lg full`   | Ширина модалки.                                                             |     |     |     |
+| `closeOnBackdrop`   | `boolean`         | Закрывать модалку при клике по бекдропу.                                    |     |     |     |
+| `showCloseButton`   | `boolean`         | Показать кнопку закрытия.                                                   |     |     |     |
+| `animationDuration` | `number`          | Длительность анимации открытия/закрытия в мс (доп. настроить в .css файле). |     |     |     |
+| `className`         | `string`          | Дополнительный класс для модалки.                                           |     |     |     |
+| `backdropClassName` | `string`          | Дополнительный класс для бекдропа.                                          |     |     |     |
+| `id`                | `string`          | Для `aria-labelledby`.                                                      |     |     |     |
+| `ariaLabel`         | `string`          | Для `aria-label`.                                                           |     |     |     |
+| `container`         | `Element \| null` | Контейнер для портала (по умолчанию `document.body`).                       |     |     |     |
+| `preventBodyScroll` | `boolean`         | Блокировать скролл body при открытой модалке.                               |     |     |     |
+| `titleIcon`         | `string`          | Иконка рядом с заголовком.                                                  |     |     |     |
+| `showBackdrop`      | `boolean`         | Показывать бекдроп.                                                         |     |     |     |
+| `renderHeader`      | `() => ReactNode` | Кастомный заголовок.                                                        |     |     |     |
+| `renderActions`     | `() => ReactNode` | Кастомные действия (футер).                                                 |     |     |     |
+
+### BaseModal
+
+Упрощённая обертка над `Modal`.
+
+Особенность: не требует передачи `isOpen` и `onClose` — они берутся из контекста модалки.
+
+Использование:
+
+```tsx
+import React from "react";
+import { type ModalComponentProps } from "../app/modal_lib/ModalProvider";
+import { BaseModal } from "../app/modal_lib/BaseModal";
+import ConfirmModalActions from "./ConfirmModalActions";
+
+export interface ConfirmModalProps extends ModalComponentProps {
+  message: string;
+  onConfirm: () => void;
+}
+
+export const ConfirmModal: React.FC<ConfirmModalProps> = ({
+  message,
+  onConfirm,
+  ...baseModalProps
+}) => {
+  return (
+    <BaseModal
+      title="Подтвердите"
+      size="sm"
+      {...baseModalProps}
+      renderActions={() => (
+        <ConfirmModalActions // buttons
+          onConfirm={onConfirm}
+          onClose={baseModalProps.onClose}
+        />
+      )}
+    >
+      <p>{message}</p>
+    </BaseModal>
+  );
+};
 ```
+
+### Хук
+
+```tsx
+const { stack, open, replace, replaceWithBack, close, closeAll } =
+  useModalRenderer();
+```
+
+| Функция                             | Описание                                                                        |
+| ----------------------------------- | ------------------------------------------------------------------------------- |
+| `open(Component, props)`            | Открыть новую модалку поверх текущей.                                           |
+| `replace(Component, props)`         | Заменить верхнюю модалку.                                                       |
+| `replaceWithBack(Component, props)` | Заменить верхнюю модалку, предыдущая временно скрыта и вернётся после закрытия. |
+| `close([id])`                       | Закрыть верхнюю или указанную модалку.                                          |
+| `closeAll()`                        | Закрыть все модалки.                                                            |
+
+## Пример использования функций управления
+
+```tsx
+import { useModalRenderer } from "../hooks/useModalRenderer";
+import { ConfirmModal } from "./ConfirmModal";
+
+export function Demo() {
+  const { open, replace, replaceWithBack, close } = useModalRenderer();
+
+  return (
+    <div>
+      <button
+        onClick={() =>
+          open(ConfirmModal, {
+            message: "Поверх текущей",
+            onConfirm: () => alert("OK"),
+          })
+        }
+      >
+        Открыть поверх
+      </button>
+
+      <button
+        onClick={() =>
+          replace(ConfirmModal, {
+            message: "Заменяем текущую",
+            onConfirm: () => alert("OK"),
+          })
+        }
+      >
+        Заменить текущую
+      </button>
+
+      <button
+        onClick={() =>
+          replaceWithBack(ConfirmModal, {
+            message: "Замена с возвратом",
+            onConfirm: () => alert("OK"),
+          })
+        }
+      >
+        Заменить с возвратом
+      </button>
+
+      <button onClick={() => close()}>Закрыть текущую</button>
+    </div>
+  );
+}
+```
+
+Рекомендации
+
+> Используйте BaseModal для большинства модалок.
+
+> Для управления стеком используйте `useModalRenderer`.
+
+> Не передавайте `isOpen` и `onClose` вручную в модалки внутри `BaseModal`.
