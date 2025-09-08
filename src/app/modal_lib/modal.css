@@ -1,0 +1,177 @@
+:root {
+  --modal-backdrop-bg: rgba(0, 102, 255, 0.116);
+  --modal-z: 9999;
+  --modal-border-radius: 12px;
+  --modal-max-width: 720px;
+  --modal-padding: 20px;
+  --modal-animation-duration: 240ms;
+}
+
+/* portal wrapper */
+.modal-portal {
+  position: fixed;
+  inset: 0;
+  z-index: var(--modal-z);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+
+  opacity: 0;
+  transition: opacity var(--modal-animation-duration) ease;
+}
+
+.modal-portal.modal-visible {
+  opacity: 1;
+  pointer-events: auto; /* разрешаем взаимодействие, бекдроп сам контролирует события */
+}
+
+.modal-portal.modal-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* backdrop */
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* transition: opacity var(--modal-animation-duration) ease,
+    backdrop-filter var(--modal-animation-duration) ease; */
+  pointer-events: auto;
+}
+
+.modal-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* visible / hidden states */
+.backdrop-visible {
+  background: var(--modal-backdrop-bg);
+  opacity: 1;
+  backdrop-filter: blur(4px);
+  transition: opacity 150ms ease, backdrop-filter 150ms ease;
+}
+
+.backdrop-hidden {
+  opacity: 0;
+  backdrop-filter: blur(0px);
+  transition: opacity 150ms ease, backdrop-filter 150ms ease;
+}
+
+/* modal container */
+.modal {
+  pointer-events: auto;
+  outline: none;
+  max-width: calc(var(--modal-max-width));
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  box-sizing: border-box;
+  color: black;
+}
+
+/* card */
+.modal-card {
+  width: 100%;
+  background: #fff;
+  border-radius: var(--modal-border-radius);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+  transform-origin: center;
+  opacity: 0;
+  transform: translateY(40px) scale(0.95);
+  transition: transform var(--modal-animation-duration)
+      var(--modal-animation-ease),
+    opacity var(--modal-animation-duration) ease;
+}
+
+/* when visible */
+.modal-visible .modal-card {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+
+.modal-hidden .modal-card {
+  transform: translateY(20px) scale(0.95);
+  opacity: 0;
+}
+
+/* header/body/footer */
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  color: black;
+}
+.modal-title {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: black;
+}
+.modal-close-btn {
+  border: none;
+  background: black;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 6px;
+}
+
+/* body */
+.modal-body {
+  padding: 16px 20px;
+  max-height: calc(80vh - 160px);
+  overflow: auto;
+  color: black;
+}
+
+/* footer */
+.modal-footer {
+  padding: 12px 20px;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  color: black;
+}
+
+/* sizes */
+.modal--sm .modal-card {
+  max-width: 360px;
+}
+.modal--md .modal-card {
+  max-width: 720px;
+}
+.modal--lg .modal-card {
+  max-width: 1024px;
+}
+.modal--full .modal-card {
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  max-width: none;
+  max-height: none;
+}
+
+/* reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .modal-card,
+  .modal-backdrop {
+    transition: none !important;
+  }
+}
+
+/* disable text selection when dragging backdrop */
+.modal-backdrop {
+  -webkit-user-select: none;
+  user-select: none;
+}
