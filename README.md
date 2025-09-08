@@ -18,26 +18,26 @@ createRoot(document.getElementById("root")!).render(
 
 Базовый компонент модалки с полной кастомизацией.
 
-| Пропс               | Тип               | Описание                                                                    |     |     |     |
-| ------------------- | ----------------- | --------------------------------------------------------------------------- | --- | --- | --- |
-| `isOpen`            | `boolean`         | Флаг видимости модалки.                                                     |     |     |     |
-| `onClose`           | `() => void`      | Функция закрытия модалки.                                                   |     |     |     |
-| `title`             | `ReactNode`       | Заголовок модалки.                                                          |     |     |     |
-| `children`          | `ReactNode`       | Контент модалки.                                                            |     |     |     |
-| `size`              | `sm md lg full`   | Ширина модалки.                                                             |     |     |     |
-| `closeOnBackdrop`   | `boolean`         | Закрывать модалку при клике по бекдропу.                                    |     |     |     |
-| `showCloseButton`   | `boolean`         | Показать кнопку закрытия.                                                   |     |     |     |
-| `animationDuration` | `number`          | Длительность анимации открытия/закрытия в мс (доп. настроить в .css файле). |     |     |     |
-| `className`         | `string`          | Дополнительный класс для модалки.                                           |     |     |     |
-| `backdropClassName` | `string`          | Дополнительный класс для бекдропа.                                          |     |     |     |
-| `id`                | `string`          | Для `aria-labelledby`.                                                      |     |     |     |
-| `ariaLabel`         | `string`          | Для `aria-label`.                                                           |     |     |     |
-| `container`         | `Element \| null` | Контейнер для портала (по умолчанию `document.body`).                       |     |     |     |
-| `preventBodyScroll` | `boolean`         | Блокировать скролл body при открытой модалке.                               |     |     |     |
-| `titleIcon`         | `string`          | Иконка рядом с заголовком.                                                  |     |     |     |
-| `showBackdrop`      | `boolean`         | Показывать бекдроп.                                                         |     |     |     |
-| `renderHeader`      | `() => ReactNode` | Кастомный заголовок.                                                        |     |     |     |
-| `renderActions`     | `() => ReactNode` | Кастомные действия (футер).                                                 |     |     |     |
+| Пропс               | Тип               | Описание                                                                    |
+| ------------------- | ----------------- | --------------------------------------------------------------------------- |
+| `isOpen`            | `boolean`         | Флаг видимости модалки.                                                     |
+| `onClose`           | `() => void`      | Функция закрытия модалки.                                                   |
+| `title`             | `ReactNode`       | Заголовок модалки.                                                          |
+| `children`          | `ReactNode`       | Контент модалки.                                                            |
+| `size`              | `sm md lg full`   | Ширина модалки.                                                             |
+| `closeOnBackdrop`   | `boolean`         | Закрывать модалку при клике по бекдропу.                                    |
+| `showCloseButton`   | `boolean`         | Показать кнопку закрытия.                                                   |
+| `animationDuration` | `number`          | Длительность анимации открытия/закрытия в мс (доп. настроить в .css файле). |
+| `className`         | `string`          | Дополнительный класс для модалки.                                           |
+| `backdropClassName` | `string`          | Дополнительный класс для бекдропа.                                          |
+| `id`                | `string`          | Для `aria-labelledby`.                                                      |
+| `ariaLabel`         | `string`          | Для `aria-label`.                                                           |
+| `container`         | `Element \| null` | Контейнер для портала (по умолчанию `document.body`).                       |
+| `preventBodyScroll` | `boolean`         | Блокировать скролл body при открытой модалке.                               |
+| `titleIcon`         | `string`          | Иконка рядом с заголовком.                                                  |
+| `showBackdrop`      | `boolean`         | Показывать бекдроп.                                                         |
+| `renderHeader`      | `() => ReactNode` | Кастомный заголовок.                                                        |
+| `renderActions`     | `() => ReactNode` | Кастомные действия (футер).                                                 |
 
 ### BaseModal
 
